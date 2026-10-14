@@ -1,7 +1,7 @@
 # 麦麦优惠雷达 Pro（mcd-deal-radar）
 
 > 麦当劳程序员创意开发大赛（M-CODE）参赛作品 · 基于麦当劳官方 MCP
-> 知识截止 2026-10-12 联网核验；具体 Tool 名 / 参数以官方仓库 `M-China/mcd-developer-innovation-challenge` 为准。
+> 知识截止 2026-10-14 联网核验；麦当劳 MCP 工具名已与官方 `M-China/mcd-mcp-server` 核对一致，入参/出参以运行时 MCP 返回为准。
 
 ## 一、项目介绍
 点麦当劳时，优惠散落在官方 App 与美团等渠道，人工比价费时。本 Skill 让你**说一个单品名**，自动从「麦当劳官方 + 美团」两个渠道拉取当前可用优惠，按**到手价**比价排序，直接给出 Top3 最便宜拿法。
@@ -55,7 +55,7 @@ mcd-deal-radar/
 
 ## 六、合规与边界
 - 所有 Token / 授权一律 `${VAR}` 占位，禁止硬编码明文。
-- 优惠以各渠道实时返回为准，不编字段、不臆测力度；未知字段标 `[INFO_GAP]` 待官方核对。
+- 优惠以各渠道实时返回为准，不编字段、不臆测力度；具体参数/返回结构以运行时 MCP 返回为准。
 - 仅使用公开 / 授权接口，不爬登录后私有页。
 - 麦当劳官方 MCP 为主心骨，美团为增强，避免偏离赛事主题。
 
@@ -65,4 +65,4 @@ mcd-deal-radar/
 3. 在 `M-China/mcd-developer-innovation-challenge` 用 Issue 模板提交「项目名称 + 项目地址 + 项目简介」即报名。
 4. 进榜（Star>0）+ 前 100 + 提交 `workbuddy.md` → 获 WorkBuddy 3000 积分。
 
-> 待官方确认字段清单见 `MCP_INTEGRATION.md` 第六节；提交前务必核对替换，禁止占位参赛。
+> 麦当劳 MCP 工具名已与官方 `M-China/mcd-mcp-server` 核对一致；各工具入参/出参以运行时返回为准，详见 `MCP_INTEGRATION.md` 第六节。

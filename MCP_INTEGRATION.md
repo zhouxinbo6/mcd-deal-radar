@@ -1,7 +1,8 @@
 # MCP 集成说明（MCP_INTEGRATION.md）
 
 > 本文件说明「麦麦优惠雷达 Pro」实际使用的麦当劳 MCP Server、Tool、调用流程与业务价值。
-> 知识截止 2026-10-12 联网核验；具体 Tool 名 / 参数 / 返回结构以官方仓库 `M-China/mcd-mcp-server` 与 `M-China/mcd-developer-innovation-challenge` 为准。
+> 知识截止 2026-10-14 联网核验（麦当劳 MCP 工具名已与官方 `M-China/mcd-mcp-server` 核对一致）；
+> 各工具入参 / 出参 JSON Schema 以运行时 MCP 返回为准。
 
 ## 一、实际使用的麦当劳 MCP Server
 - **Server**：麦当劳官方 MCP（赛事指定，本 Skill 主数据源）
@@ -27,24 +28,28 @@
 ```
 > 操作路径：WorkBuddy → 左侧【专家·技能·连接器】→【连接器】→ 右上角【自定义连接器】→【配置 MCP】→ 粘贴并保存 → 启用 `mcd-mcp`。
 
-## 二、实际调用的 Tool
-本 Skill 核心逻辑为「查优惠 → 单品筛选 → 比价」。麦当劳 MCP 提供优惠 / 餐品 / 活动相关原子能力。
-具体 Tool 名称与参数以官方 `mcd-mcp-server` 仓库为准；本仓库 `skills/mcd-deal-radar/references/mcd-mcp-tools.md` 列出假设命名与待核对清单（标 `[INFO_GAP]`）。
+## 二、实际调用的 Tool（已核对官方真实名）
+本 Skill 核心逻辑为「查优惠 → 单品筛选 → 比价」。麦当劳 MCP（mcp.mcd.cn）提供优惠 / 餐品 / 活动相关原子能力，本 Skill 实际调用：
 
-**调用计划（按能力映射）**
-- 查当前优惠（如 `promo_query`）→ 取单品级优惠
-- 查餐品（如 `menu_query`）→ 补全单品名 / 价格
-- 查限时活动（如 `activity_query`）→ 补充活动型优惠
+- `available-coupons` —— 麦麦省券列表（用户当前可领优惠）
+- `query-store-coupons` —— 当前门店下可用优惠券
+- `campaign-calendar` —— 当月营销活动日历（活动型优惠）
+- `query-meals` —— 当前可售卖餐品列表（单品筛选基础）
+- `query-meal-detail` —— 餐品详情（套餐组成）
+- `calculate-price` —— 计算到手价（比价核心）
+
+> 工具名已与官方 `M-China/mcd-mcp-server` README「# 3. 工具列表」核对一致（2026-10-14）。
+> 各工具的具体入参 / 出参 JSON Schema 官方 README 未列出，以运行时 MCP 返回为准。
 
 ## 三、调用流程
 1. 用户说单品名（如「麦辣鸡腿堡」）。
-2. WorkBuddy 调用麦当劳 MCP 相关 Tool 拉取当前优惠 / 餐品 / 活动。
+2. WorkBuddy 调用麦当劳 MCP：优惠用 `available-coupons` / `query-store-coupons` / `campaign-calendar`，餐品用 `query-meals` / `query-meal-detail`，到手价用 `calculate-price`。
 3. `scripts/aggregate.py` 的 `normalize()` 把返回拉平为统一结构 `{channel, item, original, final, threshold, expires, how}`。
 4. `filter_by_item()` 模糊匹配，只留目标单品。
 5. `rank()` 按 `final`（到手价）升序，`top_n()` 取 Top3 并算省钱力度。
 6. 输出 Top3 清单（渠道 / 到手价 / 门槛 / 有效期 / 领法）。
 
-**（可选增强）** 并行调用美团生活助手 Connector 查麦当劳团购券，一并归一化比价（美团 Connector 需在 WorkBuddy 连接器中心搜索并 OAuth 授权，当前账号默认未连接）。
+**（可选增强）** 并行调用美团生活助手 Connector 查麦当劳团购券，一并归一化比价（美团 Connector 需在 WorkBuddy 连接器中心搜索并 OAuth 授权，当前账号默认未连接；其真实 Tool 名待连接后核对，见 `references/meituan-connector.md`）。
 
 ## 四、业务价值
 - 把散落在多渠道的优惠集中比价，一句话拿到最便宜拿法。
@@ -57,10 +62,7 @@ python skills/mcd-deal-radar/scripts/aggregate.py "麦辣鸡腿堡"
 ```
 > 该脚本用内置样例验证归一化 / 筛选 / 排序逻辑，不依赖联网，便于提交前自检。
 
-## 六、待官方确认字段清单（提交前必核，禁止占位参赛）
-- [ ] 麦当劳 MCP 真实 Tool 名 / 参数 / 返回结构（核对 `mcd-mcp-server`）
-- [ ] 地域（城市 / 门店）参数传入方式
-- [ ] 美团生活助手查询麦当劳券的真实 Tool 名（如启用增强渠道）
-- [ ] 两渠道优惠时效性字段命名
-
-> 凡标 `[INFO_GAP]` 处，均需在提交前对照官方文档替换后再参赛。
+## 六、待确认事项（提交前核对）
+- [ ] 各工具入参 / 出参 JSON Schema：以运行时 MCP 返回为准（官方 README 未列出）
+- [ ] 地域（城市 / 门店）参数传入字段名：以 MCP 运行时返回为准
+- [ ] 美团生活助手查询麦当劳券的真实 Tool 名（增强渠道，见 `references/meituan-connector.md`）
