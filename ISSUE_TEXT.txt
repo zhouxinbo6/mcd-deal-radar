@@ -1,0 +1,31 @@
+========================================
+  重新报名 Issue —— 可直接复制（勿加换行）
+========================================
+
+【第 1 项：Add a title 标题栏，粘这一行】
+麦麦优惠雷达 Pro（mcd-deal-radar）
+
+----------------------------------------
+
+【第 2 项：Add a description 正文框，整段粘下面 4 行】
+【参赛申请】
+项目名称：麦麦优惠雷达 Pro（mcd-deal-radar）
+项目地址：https://github.com/zhouxinbo6/mcd-deal-radar
+项目简介：基于麦当劳官方 MCP 开发的优惠雷达 Skill，可按单品筛选优惠并按到手价排序输出最优拿法，全程使用 WorkBuddy 完成开发
+
+----------------------------------------
+
+【提交前 3 条硬规矩】
+1. 正文第 1 行必须是 【参赛申请】，前面不能有空行；
+2. 四个字段各占一行，字段名与内容之间不能换行；
+3. 项目地址必须是纯文本 URL，不要用 [文字](链接) 的 Markdown 形式。
+
+【提交位置】
+https://github.com/M-China/mcd-developer-innovation-challenge
+→ Issues → New issue → 填标题 + 正文 → 点绿色 Create
+（右侧 Assignees/Labels/Milestone 全部不动，Create more 不勾）
+
+【说明】
+- 旧的 #678 已判失败，无需修改，可点 Close issue 关闭；
+  真正生效的是你新建的这个合规 Issue。
+- 内容以官方仓库 README / activityGuidelines.md 的标准格式为准。

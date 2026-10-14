@@ -1,81 +1,103 @@
 # 报名提交指引（zhouxinbo6）
 
-> 本文件是「你登录后」要执行的最后几步。仓库已 `git init` + 首次提交，只差推送和报名。
+> 本文件是「你登录后」要执行的最后几步。
 
-## 一、推送代码到 GitHub（需你本人登录授权）
+---
 
-方式 A（推荐，用 GitHub CLI，首次会弹浏览器登录）：
-```bash
-# 1) 打开终端，进入本目录
-cd "C:\Users\zhouxinbo\WorkBuddy\2026-10-12-16-54-25\mcd-deal-radar"
+## 〇、⚠️ 报名失败反查结论（issue #678）
 
-# 2) 登录 GitHub（浏览器弹窗，用 zhouxinbo6 账号授权）
-gh auth login
+**失败通知**：`您的作品未通过审核，失败原因：您的报名信息未通过校验。您可以检查issue格式是否符合标准格式，并重新issue。`
 
-# 3) 创建公开仓库并推送（一行搞定）
-gh repo create mcd-deal-radar --public --source=. --push
+**根因**：Issue 正文未按官方「标准格式」撰写。官方 README / `activityGuidelines.md` 给出的唯一标准格式是**固定 4 行、首行固定文案 `【参赛申请】`**：
+
+```text
+【参赛申请】
+项目名称：麦当劳营养膳食专家
+项目地址：https://github.com/M-China/skills
+项目简介：身材管控期也想吃麦当劳？这个专家会帮你根据每日消耗搭配麦麦套餐
 ```
-方式 B（手动）：先在 github.com 新建公开仓库 `mcd-deal-radar`，再：
-```bash
-git remote add origin https://github.com/zhouxinbo6/mcd-deal-radar.git
-git branch -M main
-git push -u origin main
+
+**#678 实际提交内容的问题**：
+
+| # | 问题 | 说明 |
+|:--:|---|---|
+| 1 | **缺 `【参赛申请】` 首行** | 这是格式校验器的锚点，缺失直接判不合格 |
+| 2 | `项目简介` 被写成 `简介：` 并**另起一行** | 官方明确警告「【项目简介】和项目简介内容之间暂不要使用换行符」 |
+| 3 | 多了 `开发者：zhouxinbo6` 一行 | 非模板字段，多余行会干扰严格校验 |
+| 4 | 正文含空行 + 编号列表 + 多条换行 | 官方警告「报名 Issue 的标题和正文之间暂不要使用换行符」 |
+
+**注意：这与仓库内容无关。** 你的仓库文件本身是齐的（五件套 + 源码），只需**按标准格式重新提一个 Issue**即可。
+
+---
+
+## 一、重新提交 Issue（唯一必做，修正版）
+
+打开 https://github.com/M-China/mcd-developer-innovation-challenge → **Issues → New issue**
+
+### ① Add a title（标题栏）
 ```
-> 推送时若提示输入账号密码：用户名填 `zhouxinbo6`，密码填 **GitHub Personal Access Token**（不是登录密码；在 github.com → Settings → Developer settings → PAT 生成，勾 repo 权限）。
-
-## 二、提交参赛 Issue（M-China 官方仓库）
-
-打开 https://github.com/M-China/mcd-developer-innovation-challenge ，用 **Issue 模板**提交，内容直接复制下面：
-
+麦麦优惠雷达 Pro（mcd-deal-radar）
 ```
-标题：M-CODE 参赛：麦麦优惠雷达 Pro（mcd-deal-radar）
 
+### ② Add a description（正文框，整段粘贴，4 行、无空行）
+```
+【参赛申请】
 项目名称：麦麦优惠雷达 Pro（mcd-deal-radar）
 项目地址：https://github.com/zhouxinbo6/mcd-deal-radar
-开发者：zhouxinbo6
-
-简介：
-基于麦当劳官方 MCP（mcp.mcd.cn）+ 美团生活助手连接器，按单品筛选并比价
-官方与美团渠道当前最优麦当劳优惠的 Skill。核心能力：
-1. 单品级优惠筛选（如「麦辣鸡腿堡」）；
-2. 双渠道归一化比价，按到手价升序输出 Top3 + 省钱力度；
-3. 全程使用 WorkBuddy 开发（对话上下文已导出 workbuddy.md）。
-已提交官方四件套（README / CONTEST_DECLARATION / MCP_INTEGRATION / workbuddy）+ Skill 源码。
+项目简介：基于麦当劳官方 MCP 开发的优惠雷达 Skill，可按单品筛选优惠并按到手价排序输出最优拿法，全程使用 WorkBuddy 完成开发
 ```
 
-## 三、CSDN builderx 活动页（非官方，可选，不影响报名）
+### ③ 提交
+右侧 Assignees / Labels / Projects / Milestone **全部不动**，`Create more` **不勾** → 点绿色 **Create**。
 
-> 经核对 WorkBuddy 官方活动帖（developer.cloud.tencent.cn/article/2758235），**官方报名渠道只有 GitHub Issue，全文未提及任何 CSDN 链接**。
-> 你之前给的 `builderx.csdn.net/activity-site/m-code/pages` 是第三方展示页，不是必做项。拿 3000 分无需在此提交。
-> 若你仍想在该页展示作品：直接访问 `https://builderx.csdn.net/activity-site/m-code/pages`（删掉空的 `?sessionid=`）登录后操作即可，sessionid 是登录后系统自动补的。
+> **三条硬规矩（务必遵守）**：
+> 1. 正文**第 1 行必须是** `【参赛申请】`，前面不能有空行；
+> 2. 四个字段**各占一行**，字段名与内容之间**不能换行**；
+> 3. 项目地址**必须是纯文本 URL**，**不要**用 `[文字](链接)` 的 Markdown 形式。
 
-**★ 真正必做：仅 GitHub Issue 报名（见第二节）。**
+> 旧的 #678 可以不用管（已判失败），若想干净可点 **Close issue** 关掉它；重要的是**新建**一个合规 Issue。
 
-## 四、报名前必做（否则判占位）
-- [ ] 麦当劳 MCP 工具名已核对官方 `mcd-mcp-server`（无需再替换）；各工具入参/出参以运行时返回为准；美团 Tool 名待连接后核对
-- [ ] 确认麦当劳 MCP 已在 WorkBuddy 连接并真调通
-- [ ] 公开仓库含四件套 + Skill 源码
-- [ ] 导出开发对话 MD 已入库（workbuddy.md）
+---
 
-## 五、网络受限时的兜底上传（git push 连不上 github.com）
+## 二、仓库文件自查（报名条件项）
 
-**症状**：`git push` 报 `Failed to connect to github.com:443 ... Could not connect to server`。
-**原因**：本机网络（常见于手机热点/部分运营商）阻断了 `github.com` 域名，push 走不了。
-**诊断**：`curl -I https://github.com` 超时 / `curl -I https://api.github.com` 通 → 属于此类。
+| 文件 | 官方要求 | 状态 |
+|---|---|---|
+| `README.md` | 必须，文件名不可改 | ✅ |
+| `CONTEST_DECLARATION.md` | 必须，**文件名与内容均不可改** | ✅ 官方原版 |
+| `MCP_INTEGRATION.md` | 必须，文件名不可改 | ✅ |
+| `mcp-config.example.json` | 必须，脱敏、仅允许环境变量占位 | ✅ |
+| 源代码 | 必须 | ✅ `skills/mcd-deal-radar/` |
+| `workbuddy.md` | WorkBuddy 专项 3000 分必备，文件名不可改 | ✅ 已替换为真实开发实录 |
 
-**兜底通道**：改用 `api.github.com`（通常可通）逐文件上传，脚本 `push_via_api.py` 已放在本目录。
+> 报名条件另要求：仓库为 **Public**（已是）；项目创建时间在 **2025-12-25 ~ 2026-10-25** 之间（你的仓库创建于 2026-10-14，符合）。
 
-步骤：
-1. 生成 PAT：GitHub → 头像 → Settings → Developer settings →
-   Personal access tokens → Tokens (classic) → Generate new token (classic) → 勾 `repo`。
-2. 在终端运行（token 只放本机环境变量，勿写进代码）：
-   ```powershell
-   cd "C:\Users\zhouxinbo\WorkBuddy\2026-10-12-16-54-25\mcd-deal-radar"
-   $env:GITHUB_TOKEN="ghp_你的token"
-   python push_via_api.py
-   ```
-3. 看到逐行 `OK 文件名` 即上传成功；脚本可反复运行（幂等）。
+---
 
-**更简单的替代（若条件允许）**：
-- 换用能访问 GitHub 的网络（如回到首次推送成功的那个网络）再 `git push`；
-- 或给 git 配代理：`git config --global http.proxy http://127.0.0.1:端口`（端口按你的代理工具填），推完可 `--unset`。
+## 三、3000 积分的真实门槛（诚实版）
+
+官方奖励原文：
+- 排行榜**前 100 名**（Star > 0 才进榜）中，**真实使用 WorkBuddy 且提交了 `workbuddy.md`** 的项目 → **每人 3000 积分**。
+- 前 3 名：无论是否用 WorkBuddy，各得 10240 积分。
+
+**推论**：想拿 3000 分，必须满足 ①报名成功（本文件第一节）②`workbuddy.md` 为真实开发凭证 ③至少 1 个 Star 进榜。
+
+---
+
+## 四、推送（沙箱网络受限时的兜底）
+
+若 `git push` 报 `Failed to connect to github.com:443`，属本机网络阻断。可选：
+- **换网络**重试（历史上有成功记录）；
+- **配代理**：`git config --global http.proxy http://127.0.0.1:端口`（推完 `--unset`）；
+- **走 api.github.com 兜底**（脚本 `push_via_api.py`）：生成 PAT 后
+  ```powershell
+  cd "C:\Users\zhouxinbo\WorkBuddy\2026-10-12-16-54-25\mcd-deal-radar"
+  $env:GITHUB_TOKEN="ghp_你的token"
+  python push_via_api.py
+  ```
+
+## 五、Win 下提交（本地已 commit，只差 push）
+```bash
+cd "C:\Users\zhouxinbo\WorkBuddy\2026-10-12-16-54-25\mcd-deal-radar"
+git push
+```
