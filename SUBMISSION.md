@@ -43,19 +43,39 @@ git push -u origin main
 已提交官方四件套（README / CONTEST_DECLARATION / MCP_INTEGRATION / workbuddy）+ Skill 源码。
 ```
 
-## 三、CSDN builderx 活动页（你给的链接）
+## 三、CSDN builderx 活动页（非官方，可选，不影响报名）
 
-地址：`https://builderx.csdn.net/activity-site/m-code/pages?sessionid=`（sessionid 需你登录后补全）
+> 经核对 WorkBuddy 官方活动帖（developer.cloud.tencent.cn/article/2758235），**官方报名渠道只有 GitHub Issue，全文未提及任何 CSDN 链接**。
+> 你之前给的 `builderx.csdn.net/activity-site/m-code/pages` 是第三方展示页，不是必做项。拿 3000 分无需在此提交。
+> 若你仍想在该页展示作品：直接访问 `https://builderx.csdn.net/activity-site/m-code/pages`（删掉空的 `?sessionid=`）登录后操作即可，sessionid 是登录后系统自动补的。
 
-我无法替你登录或填该页。登录后，页面通常要求：
-1. 绑定 GitHub 账号（授权）；
-2. 粘贴仓库地址 `https://github.com/zhouxinbo6/mcd-deal-radar`；
-3. 点「提交/报名」。
-
-登录后把页面截图或贴出字段名发我，我逐步教你点。
+**★ 真正必做：仅 GitHub Issue 报名（见第二节）。**
 
 ## 四、报名前必做（否则判占位）
 - [ ] 麦当劳 MCP 工具名已核对官方 `mcd-mcp-server`（无需再替换）；各工具入参/出参以运行时返回为准；美团 Tool 名待连接后核对
 - [ ] 确认麦当劳 MCP 已在 WorkBuddy 连接并真调通
 - [ ] 公开仓库含四件套 + Skill 源码
 - [ ] 导出开发对话 MD 已入库（workbuddy.md）
+
+## 五、网络受限时的兜底上传（git push 连不上 github.com）
+
+**症状**：`git push` 报 `Failed to connect to github.com:443 ... Could not connect to server`。
+**原因**：本机网络（常见于手机热点/部分运营商）阻断了 `github.com` 域名，push 走不了。
+**诊断**：`curl -I https://github.com` 超时 / `curl -I https://api.github.com` 通 → 属于此类。
+
+**兜底通道**：改用 `api.github.com`（通常可通）逐文件上传，脚本 `push_via_api.py` 已放在本目录。
+
+步骤：
+1. 生成 PAT：GitHub → 头像 → Settings → Developer settings →
+   Personal access tokens → Tokens (classic) → Generate new token (classic) → 勾 `repo`。
+2. 在终端运行（token 只放本机环境变量，勿写进代码）：
+   ```powershell
+   cd "C:\Users\zhouxinbo\WorkBuddy\2026-10-12-16-54-25\mcd-deal-radar"
+   $env:GITHUB_TOKEN="ghp_你的token"
+   python push_via_api.py
+   ```
+3. 看到逐行 `OK 文件名` 即上传成功；脚本可反复运行（幂等）。
+
+**更简单的替代（若条件允许）**：
+- 换用能访问 GitHub 的网络（如回到首次推送成功的那个网络）再 `git push`；
+- 或给 git 配代理：`git config --global http.proxy http://127.0.0.1:端口`（端口按你的代理工具填），推完可 `--unset`。
